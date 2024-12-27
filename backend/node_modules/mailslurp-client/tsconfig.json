@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "target": "es5",
+    "declaration": true,
+    "lib": [
+      "es6",
+      "es2015",
+      "es2017",
+      "dom"
+    ],
+    "module": "commonjs",
+    "types": [
+      "jest",
+      "node"
+    ],
+    "paths": {
+      "mailslurp-client": ["./dist"]
+    },
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "strict": false
+  },
+  "include": [
+    "src/index.ts"
+    ],
+}
