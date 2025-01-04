@@ -55,18 +55,40 @@ function Profile() {
   const handleProfilePictureChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast.error('Please select an image file');
+        return;
+      }
+      
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Image size should be less than 5MB');
+        return;
+      }
+
       try {
         setIsUploading(true);
         const formData = new FormData();
         formData.append('profilePicture', file);
+        
         const response = await uploadProfilePicture(formData);
         const updatedProfilePicture = response.data.profilePicture;
-        setProfile({ ...profile, profilePicture: updatedProfilePicture });
-        setUser({ ...user, profilePicture: updatedProfilePicture });
+        
+        // Update local state
+        setProfile(prev => ({ ...prev, profilePicture: updatedProfilePicture }));
+        setUser(prev => ({ ...prev, profilePicture: updatedProfilePicture }));
+        
+        // Force image refresh by adding timestamp
+        const imgElement = document.querySelector('.profile-picture-img');
+        if (imgElement) {
+          imgElement.src = `${getProfilePictureUrl(updatedProfilePicture)}?t=${Date.now()}`;
+        }
+        
         toast.success('Profile picture updated successfully');
       } catch (error) {
         console.error('Error uploading profile picture:', error);
-        toast.error('Failed to upload profile picture');
+        toast.error(error.response?.data?.message || 'Failed to upload profile picture');
       } finally {
         setIsUploading(false);
       }
@@ -102,17 +124,37 @@ function Profile() {
                 <img 
                   src={getProfilePictureUrl(profile.profilePicture)} 
                   alt="Profile" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover profile-picture-img"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = '/path/to/fallback/image.jpg'; // Add a fallback image
+                    e.target.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
                   }}
                 />
               ) : (
                 <FaUser className="text-gray-400 text-4xl" />
               )}
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-                <FaCamera className="text-white text-2xl" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute inset-0">
+                  {profile.profilePicture ? (
+                    <img 
+                      src={getProfilePictureUrl(profile.profilePicture)} 
+                      alt="Profile" 
+                      className="w-full h-full object-cover profile-picture-img"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+                      }}
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200" />
+                  )}
+                </div>
+                <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                  <FaUser className="text-white text-2xl" />
+                </div>
+                <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
+                  <FaCamera className="text-white text-2xl opacity-0 hover:opacity-100 transition-opacity duration-300" />
+                </div>
               </div>
             </motion.div>
             <AnimatePresence>

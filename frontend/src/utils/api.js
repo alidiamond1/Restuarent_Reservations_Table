@@ -82,17 +82,39 @@ export const sendPromotion = (customerId, message) => api.post(`/admin/customers
 // Profile Management
 export const getProfile = () => api.get('/auth/me');
 export const updateProfile = (profileData) => api.put('/auth/me', profileData);
+export const getProfilePictureUrl = (path) => {
+  if (!path) return null;
+  
+  // Log the path for debugging
+  console.log('Getting profile picture URL for path:', path);
+  
+  let url;
+  if (path.startsWith('http')) {
+    url = path;
+  } else if (path.startsWith('/')) {
+    url = `${import.meta.env.VITE_API_URL}${path}`;
+  } else {
+    url = `${import.meta.env.VITE_API_URL}/${path}`;
+  }
+  
+  // Log the final URL for debugging
+  console.log('Final profile picture URL:', url);
+  return url;
+};
+
 export const uploadProfilePicture = (formData) => {
+  console.log('Uploading profile picture...');
   return api.post('/auth/upload-profile-picture', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
+  }).then(response => {
+    console.log('Upload successful:', response.data);
+    return response;
+  }).catch(error => {
+    console.error('Upload failed:', error.response?.data || error.message);
+    throw error;
   });
-};
-
-export const getProfilePictureUrl = (path) => {
-  if (!path) return null;
-  return path.startsWith('http') ? path : `${import.meta.env.VITE_API_URL}${path}`;
 };
 
 export const resetPassword = (token, password) => {

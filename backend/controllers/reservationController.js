@@ -34,6 +34,8 @@ exports.createReservation = async (req, res) => {
   }
 };
 
+
+
 exports.getUserReservations = async (req, res) => {
   try {
     console.log('Fetching reservations for user:', req.userId); // Add this line for debugging
@@ -47,6 +49,8 @@ exports.getUserReservations = async (req, res) => {
     res.status(500).json({ message: 'Error fetching reservations', error: error.message });
   }
 };
+
+
 
 exports.updateReservation = async (req, res) => {
   try {
@@ -144,3 +148,4 @@ exports.deleteReservation = async (req, res) => {
     res.status(500).json({ message: 'Error deleting reservation', error: error.message });
   }
 };
+ 

@@ -29,43 +29,52 @@ function Navbar() {
           <div className="flex">
             <Link to="/" className="flex-shrink-0 flex items-center">
               <FaUtensils className="h-8 w-8 text-indigo-600" />
-              <span className="ml-2 text-xl font-bold text-gray-800">Restaurant Name</span>
+              <span className="ml-2 text-xl font-bold text-gray-800">Dhadhan Restaurant</span>
             </Link>
           </div>
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
-            <Link to="/" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Home</Link>
-            <Link to="/menu" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Menu</Link>
-            <Link to="/reservations" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Reservations</Link>
-            <Link to="/about" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">About</Link>
-            <Link to="/contact" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Contact</Link>
+            {user && user.role === 'admin' ? (
+              <Link to="/dashboard" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Dashboard</Link>
+            ) : (
+              <>
+                <Link to="/" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Home</Link>
+                <Link to="/menu" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Menu</Link>
+                <Link to="/reservations" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Reservations</Link>
+                <Link to="/about" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">About</Link>
+                <Link to="/contact" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Contact</Link>
+              </>
+            )}
             {user ? (
               <>
-                {user.role === 'admin' ? (
-                  <Link to="/dashboard" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Dashboard</Link>
-                ) : (
-                  <Link to="/my-reservations" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                    My Reservations
-                  </Link>
-                )}
+              {user.role !== 'admin' && (
+                <Link to="/my-reservations" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                My Reservations
+                </Link>
+              )}
                 <div className="relative ml-3">
                   <motion.div
                     className="relative w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden cursor-pointer"
                     whileHover={{ scale: 1.05 }}
                     onClick={() => setShowProfileOptions(!showProfileOptions)}
                   >
-                    {user.profilePicture ? (
-                      <img 
-                        src={getProfilePictureUrl(user.profilePicture)} 
-                        alt="Profile" 
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = '/path/to/fallback/image.jpg'; // Add a fallback image
-                        }}
-                      />
-                    ) : (
-                      <FaUser className="text-gray-400 text-xl" />
-                    )}
+                    <div className="absolute inset-0">
+                      {user.profilePicture ? (
+                        <img 
+                          src={getProfilePictureUrl(user.profilePicture)} 
+                          alt="Profile" 
+                          className="w-full h-full object-cover profile-picture-img"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gray-200" />
+                      )}
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20">
+                      <FaUser className="text-white text-xl" />
+                    </div>
                   </motion.div>
                   <AnimatePresence>
                     {showProfileOptions && (
@@ -100,18 +109,22 @@ function Navbar() {
       {/* Mobile menu */}
       <div className={`${isOpen ? 'block' : 'hidden'} sm:hidden`}>
         <div className="px-2 pt-2 pb-3 space-y-1">
-          <Link to="/" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Home</Link>
-          <Link to="/menu" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Menu</Link>
-          <Link to="/reservations" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Reservations</Link>
-          <Link to="/about" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">About</Link>
-          <Link to="/contact" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Contact</Link>
+          {user && user.role === 'admin' ? (
+            <Link to="/dashboard" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Dashboard</Link>
+          ) : (
+            <>
+              <Link to="/" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Home</Link>
+              <Link to="/menu" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Menu</Link>
+              <Link to="/reservations" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Reservations</Link>
+              <Link to="/about" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">About</Link>
+              <Link to="/contact" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Contact</Link>
+            </>
+          )}
           {user ? (
             <>
-              {user.role === 'admin' ? (
-                <Link to="/dashboard" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Dashboard</Link>
-              ) : (
+                {user.role !== 'admin' && (
                 <Link to="/my-reservations" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">My Reservations</Link>
-              )}
+                )}
               <Link to="/profile" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Profile</Link>
               <button onClick={handleLogout} className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Logout</button>
             </>
