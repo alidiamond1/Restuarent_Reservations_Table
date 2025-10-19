@@ -40,6 +40,28 @@ mongoose.connect(process.env.MONGODB_URI)
 // Serve static files from the uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Health check route
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Restaurant Reservations API is running!',
+    status: 'OK',
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.get('/api', (req, res) => {
+  res.json({ 
+    message: 'Restaurant Reservations API',
+    version: '1.0.0',
+    endpoints: [
+      '/api/auth',
+      '/api/reservations',
+      '/api/tables',
+      '/api/admin'
+    ]
+  });
+});
+
 // Routes
 const authRoutes = require('./routes/auth');
 const reservationRoutes = require('./routes/reservations');
