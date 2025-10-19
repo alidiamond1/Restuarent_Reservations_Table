@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- Background circle with gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="plateGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fef2f2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fee2e2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <circle cx="100" cy="100" r="95" fill="url(#bgGradient)"/>
+  
+  <!-- Plate -->
+  <ellipse cx="100" cy="110" rx="55" ry="50" fill="url(#plateGradient)" stroke="#dc2626" stroke-width="2"/>
+  <ellipse cx="100" cy="110" rx="45" ry="40" fill="none" stroke="#fca5a5" stroke-width="1.5"/>
+  
+  <!-- Fork (Left) -->
+  <g transform="translate(55, 60)">
+    <rect x="0" y="0" width="3" height="70" rx="1.5" fill="#dc2626"/>
+    <rect x="-6" y="0" width="2.5" height="25" rx="1.25" fill="#dc2626"/>
+    <rect x="6" y="0" width="2.5" height="25" rx="1.25" fill="#dc2626"/>
+    <rect x="-3" y="0" width="2.5" height="30" rx="1.25" fill="#dc2626"/>
+    <rect x="3" y="0" width="2.5" height="30" rx="1.25" fill="#dc2626"/>
+  </g>
+  
+  <!-- Knife (Right) -->
+  <g transform="translate(142, 60)">
+    <rect x="0" y="0" width="3" height="70" rx="1.5" fill="#dc2626"/>
+    <path d="M -5 0 L 8 0 L 5 15 L -2 15 Z" fill="#dc2626"/>
+    <rect x="-2" y="15" width="7" height="3" fill="#b91c1c"/>
+  </g>
+  
+  <!-- Decorative dots on plate -->
+  <circle cx="85" cy="105" r="2" fill="#fca5a5" opacity="0.6"/>
+  <circle cx="100" cy="100" r="2" fill="#fca5a5" opacity="0.6"/>
+  <circle cx="115" cy="105" r="2" fill="#fca5a5" opacity="0.6"/>
+  <circle cx="90" cy="115" r="2" fill="#fca5a5" opacity="0.6"/>
+  <circle cx="110" cy="115" r="2" fill="#fca5a5" opacity="0.6"/>
+</svg>
+
