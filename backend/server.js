@@ -35,7 +35,7 @@ connectToDatabase().catch(console.error);
 const allowedOrigins = [
   'http://localhost:5173',
   process.env.FRONTEND_URL,
-  'https://your-frontend.vercel.app'
+  'https://restuarent-reservations-table.vercel.app/'
 ].filter(Boolean);
 
 app.use(cors({
